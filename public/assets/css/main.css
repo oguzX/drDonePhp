@@ -8,9 +8,8 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background:;
   position: relative;
-  font-weight:400px;
+  font-weight: 400;
 }
 
 ul li {
@@ -1428,7 +1427,7 @@ h2.title {
 #form {
   display: block;
   margin-bottom: 185px;
-  margin-top: 50px;
+  margin-top: 185px;
   overflow: hidden;
 }
 
@@ -1661,7 +1660,6 @@ h2.title {
 
 
 .cart_delete a {
-  background:#F0F0E9;
   color: #FFFFFF;
   padding: 5px 7px;
   font-size: 16px
@@ -2520,4 +2518,8 @@ h2.title {
   color: #FE980F;
 }
 
-
+.img-thumbnail-sm{
+  width: 100px;
+  display: block;
+  margin: 0 auto;
+}

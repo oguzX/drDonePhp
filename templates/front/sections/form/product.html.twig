@@ -1,0 +1,26 @@
+{% extends 'front/base.html.twig' %}
+{% block section %}
+    <section id="cart_items">
+        <div class="container">
+            <div class="col-md-8 col-md-offset-2">
+                {% if form_errors(productForm) %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form_errors(productForm) }}
+                </div>
+                {% endif %}
+                {{ form_start(productForm, {'method': 'post', 'attr': {'class': 'fos_user_registration_register'}}) }}
+                {% for element in productForm %}
+                    <div class="form-group">
+                        {{ form_row(element) }}
+                    </div>
+                {% endfor %}
+                <div>
+                    <input type="submit" class="btn btn-info" value="Ekle"/>
+                </div>
+                {{ form_end(productForm) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}

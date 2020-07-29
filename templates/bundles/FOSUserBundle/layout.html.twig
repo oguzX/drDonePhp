@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'front/base.html.twig' %}
 {% block section %}
     <section id="form"><!--form-->
         <div class="container">
@@ -12,7 +12,6 @@
                         {% endfor %}
                     {% endfor %}
                 {% endif %}
-
                 <div>
                     {% block fos_user_content %}
                     {% endblock fos_user_content %}

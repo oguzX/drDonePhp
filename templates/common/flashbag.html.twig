@@ -1,0 +1,28 @@
+{% for flashMessage in app.session.flashbag.get('error') %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Swal.fire({
+                title: 'Error!',
+                text: '{{ flashMessage }}',
+                icon: 'error',
+                confirmButtonText: 'Tamam'
+            })
+        });
+    </script>
+
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Swal.fire({
+                title: 'Başarılı!',
+                text: '{{ flashMessage }}',
+                icon: 'success',
+                confirmButtonText: 'Tamam'
+            })
+        });
+    </script>
+
+{% endfor %}

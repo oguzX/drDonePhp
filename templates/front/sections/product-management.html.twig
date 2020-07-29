@@ -1,0 +1,79 @@
+{% extends 'front/base.html.twig' %}
+{% block section %}
+
+<section id="cart_items">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="{{ path('home') }}">Home</a></li>
+                <li class="active">Ürünlerim</li>
+            </ol>
+        </div><!--/breadcrums-->
+
+        <div class="step-one">
+            <h2 class="heading">Ürünlerim</h2>
+        </div>
+        <div class="row m-b-10">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-10"></div>
+                    <div class="col-sm-2">
+                        <a href="{{ path('user_product_add') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Ekle</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive cart_info ">
+            <table class="table table-condensed">
+                <thead>
+                <tr class="cart_menu">
+                    <td class="image">İsmi</td>
+                    <td class="description"></td>
+                    <td class="price">Fiyatı</td>
+                    <td class="quantity">Adet</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td class="cart_product">
+                            <a href=""><img class="img-thumbnail img-thumbnail-sm" src="{{ product.images[0] | default(asset('assets/images/shop/none-img.png'))}}" alt=""></a>
+                        </td>
+                        <td class="cart_description">
+                            <h4><a href="">{{ product.title }}</a></h4>
+                            <p># {{ product.id }}</p>
+                        </td>
+                        <td class="cart_price">
+                            <p>{{ product.price }}₺</p>
+                        </td>
+                        <td class="cart_quantity">
+                            <p>{{ product.quantity }}</p>
+                        </td>
+                        <td>
+                            {% if product.isSold %}
+                                <span class="text-success">
+                                <i class="fa fa-check"></i> Ürün Satıldı
+                                </span>
+                            {% else %}
+                                <a class="cart_quantity_delete btn btn-success" href="{{ path('user_product_set_sold',{'id':product.id}) }}"><i class="fa fa-check"></i> Satıldı Olarak Ayarla</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="cart_quantity_delete btn btn-danger" href="{{ path('user_product_set_sold',{'id':product.id}) }}"><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">
+                            Ürününüz Bulunmuyor.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section> <!--/#cart_items-->
+{% endblock %}

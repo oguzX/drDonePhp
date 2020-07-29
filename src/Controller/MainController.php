@@ -10,7 +10,7 @@ class MainController extends AbstractController {
 
     /**
      * @Route("/", name="home")
-     * @Template("sections/product-list.html.twig")
+     * @Template("front/sections/product-list.html.twig")
      */
     public function indexAction(){
 
