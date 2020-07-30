@@ -2,13 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Product;
-use App\Service\ProductService;
-use App\Type\ProductType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,13 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController {
 
     /**
-     * @Route("/", name="user_product")
-     * @Template("front/sections/product/product-management.html.twig")
+     * @Route("/{handle}", name="product_detail")
+     * @Template("front/sections/product/product-detail.html.twig")
      */
-    public function indexAction(){
-        $products = $this->getDoctrine()->getRepository(Product::class)->findBy(['user' => $this->getUser()->getId()]);
+    public function detailAction(Product $product){
+        $otherProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(['user'=>$this->getUser(),'isSold'=>0],['createdAt'=>'desc'],4);
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+
         return [
-            'products' => $products
+            'product' => $product,
+            'otherProducts' => $otherProducts,
+            'categories' => $categories,
         ];
     }
 }

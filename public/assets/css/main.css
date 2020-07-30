@@ -2524,6 +2524,11 @@ h2.title {
   margin: 0 auto;
 }
 
+.product-list{
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .f-15{
   font-size: 15px;
 }
@@ -2534,4 +2539,8 @@ h2.title {
 
 .f-20{
   font-size: 20px;
+}
+
+.m-20{
+  margin: 20px
 }

@@ -1,0 +1,12 @@
+<div class="col-sm-{{col | default(3)}}">
+    <div class="product-image-wrapper">
+        <div class="single-products">
+            <div class="productinfo text-center">
+                <img src="{{ asset('assets/images/user/product/'~(product.images | first).url) }}" alt="" />
+                <h2>{{ product.price }} TL</h2>
+                <p>{{ product.title }}</p>
+                <a href="{{ path('product_detail', {'handle':product.handle}) }}" type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Detay</a>
+            </div>
+        </div>
+    </div>
+</div>
