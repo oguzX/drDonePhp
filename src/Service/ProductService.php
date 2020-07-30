@@ -36,21 +36,8 @@ class ProductService
     public function addImagesToProduct(Product $product, $imagesFile, $flush = false){
         if ($imagesFile) {
             foreach ($imagesFile as $imageFile){
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $this->slug->slugify($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-
-                // Move the file to the directory where brochures are stored
-                try {
-                    $imageFile->move(
-                        $this->parameterBag->get('images_path'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
                 $newImage = new Images();
+                $newFilename = $this->imageUpload($imageFile);
                 $newImage->setUrl($newFilename);
                 $product->addImage($newImage);
             }
@@ -62,5 +49,24 @@ class ProductService
             $this->em->flush();
         }
         return $product;
+    }
+
+    public function imageUpload($imageFile, $pathParam = 'images_path'){
+        $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+        // this is needed to safely include the file name as part of the URL
+        $safeFilename = $this->slug->slugify($originalFilename);
+        $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+        // Move the file to the directory where brochures are stored
+        try {
+            $imageFile->move(
+                $this->parameterBag->get($pathParam),
+                $newFilename
+            );
+        } catch (FileException $e) {
+            // ... handle exception if something happens during file upload
+        }
+
+        return $newFilename;
     }
 }
