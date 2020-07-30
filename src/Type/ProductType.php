@@ -75,6 +75,24 @@ class ProductType extends AbstractType
                     ]
                 ]
             )
+            ->add('images', FileType::class, [
+                'label'=>'Kapak Fotoğrafı',
+                'mapped'=>false,
+                'required'=>false,
+                'attr'     => [
+                    'multiple' => 'multiple'
+                ],
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5000k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Lütfen JPG yada PNG formatında fotoğraf yükleyiniz',
+                    ])
+                ],
+            ])
         ;
     }
 

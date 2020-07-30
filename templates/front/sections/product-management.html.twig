@@ -39,7 +39,8 @@
                 {% for product in products %}
                     <tr>
                         <td class="cart_product">
-                            <a href=""><img class="img-thumbnail img-thumbnail-sm" src="{{ product.images[0] | default(asset('assets/images/shop/none-img.png'))}}" alt=""></a>
+                            {% set thumbnail = product.images[0].url | default('none-img.png') %}
+                            <a href=""><img class="img-thumbnail img-thumbnail-sm" src="{{ asset('assets/images/user/product/'~thumbnail ) }}" alt=""></a>
                         </td>
                         <td class="cart_description">
                             <h4><a href="">{{ product.title }}</a></h4>

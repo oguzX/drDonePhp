@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ImagesRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Images
 {
@@ -37,6 +38,16 @@ class Images
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function updatedTimestamps(): void
+    {
+        if (!$this->getCreatedAt()) {
+            $this->setCreatedAt(new \DateTime('now'));
+        }
+    }
 
     public function getId(): ?int
     {

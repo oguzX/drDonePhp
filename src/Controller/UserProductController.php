@@ -44,7 +44,7 @@ class UserProductController extends AbstractController {
 
             $product->setUser($this->getUser());
 
-            $product = $productService->addImagesToProduct($product, $form->get('images')->getData());
+            $product = $productService->addImagesToProduct($product, [$form->get('images')->getData()]);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);

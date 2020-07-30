@@ -8,6 +8,7 @@ use App\Entity\Images;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Easybook\Slugger;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class ProductService
@@ -19,13 +20,17 @@ class ProductService
     /** @var Slugger */
     private $slug;
 
+    /** @var ParameterBagInterface */
+    private $parameterBag;
+
     /**
      * ProductService constructor.
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameterBag)
     {
         $this->em = $em;
         $this->slug = new Slugger();
+        $this->parameterBag = $parameterBag;
     }
 
     public function addImagesToProduct(Product $product, $imagesFile, $flush = false){
@@ -39,7 +44,7 @@ class ProductService
                 // Move the file to the directory where brochures are stored
                 try {
                     $imageFile->move(
-                        $this->getParameter('images_path'),
+                        $this->parameterBag->get('images_path'),
                         $newFilename
                     );
                 } catch (FileException $e) {
