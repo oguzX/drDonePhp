@@ -19,7 +19,7 @@ class UserProductController extends AbstractController {
 
     /**
      * @Route("/", name="user_product")
-     * @Template("front/sections/product-management.html.twig")
+     * @Template("front/sections/product/product-management.html.twig")
      */
     public function indexAction(){
         $products = $this->getDoctrine()->getRepository(Product::class)->findBy(['user' => $this->getUser()->getId()]);
@@ -30,7 +30,7 @@ class UserProductController extends AbstractController {
 
     /**
      * @Route("/add", name="user_product_add")
-     * @Template("front/sections/form/product.html.twig")
+     * @Template("front/sections/product/form/product.html.twig")
      */
     public function addAction(Request $request, ProductService $productService){
         $form = $this->createForm(ProductType::class);
@@ -39,17 +39,12 @@ class UserProductController extends AbstractController {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Product $task */
-            $product = $form->getData();
-
-            $product->setUser($this->getUser());
-
-            $product = $productService->addImagesToProduct($product, [$form->get('images')->getData()]);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($product);
-            $em->flush();
-            $this->addFlash('success', 'Ürün Eklendi!');
+            try{
+                $productService->createProductByForm($form);
+                $this->addFlash('success', 'Ürün Eklendi!');
+            }catch (\Exception $exception){
+                $this->addFlash('error', 'Sistem Hatası: '. $exception->getMessage());
+            }
         }
 
         return [

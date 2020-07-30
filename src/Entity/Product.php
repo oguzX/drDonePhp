@@ -83,6 +83,13 @@ class Product
      */
     private $deletedAt;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $handle;
+
+    private $container;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -304,6 +311,18 @@ class Product
     public function setDeletedAt(?\DateTimeInterface $deletedAt): self
     {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getHandle(): ?string
+    {
+        return $this->handle;
+    }
+
+    public function setHandle(string $handle): self
+    {
+        $this->handle = $handle;
 
         return $this;
     }

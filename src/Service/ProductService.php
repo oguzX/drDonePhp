@@ -8,8 +8,11 @@ use App\Entity\Images;
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Easybook\Slugger;
+use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 class ProductService
 {
@@ -23,14 +26,33 @@ class ProductService
     /** @var ParameterBagInterface */
     private $parameterBag;
 
+    /** @var UserInterface */
+    private $user;
+
     /**
      * ProductService constructor.
      */
-    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameterBag)
+    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameterBag, Security $security)
     {
         $this->em = $em;
         $this->slug = new Slugger();
         $this->parameterBag = $parameterBag;
+        $this->user = $security->getUser();
+    }
+
+    public function createProductByForm($productForm){
+        /** @var Product $task */
+        $product = $productForm->getData();
+
+        $product->setUser($this->user);
+
+        $product = $this->addImagesToProduct($product, [$productForm->get('images')->getData()]);
+        $product = $this->setUniqueSlug($product);
+
+        $this->em->persist($product);
+        $this->em->flush();
+
+        return $product;
     }
 
     public function addImagesToProduct(Product $product, $imagesFile, $flush = false){
@@ -41,13 +63,8 @@ class ProductService
                 $newImage->setUrl($newFilename);
                 $product->addImage($newImage);
             }
-        }else{
-            return false;
         }
-        if($flush){
-            $this->em->persist($product);
-            $this->em->flush();
-        }
+        $this->flush($product, $flush);
         return $product;
     }
 
@@ -68,5 +85,26 @@ class ProductService
         }
 
         return $newFilename;
+    }
+
+    public function setUniqueSlug(Product $product, $flush = false){
+        $productRepo = $this->em->getRepository(Product::class);
+        do{
+            $slug = $product->getTitle().' '.rand(0,99999);
+            $product->setHandle($this->slug->slugify($slug));
+        }while($productRepo->findOneBy(['handle'=>$product->getHandle()]));
+
+        $this->flush($product, $flush);
+
+        return $product;
+    }
+
+    private function flush($obj, $flush){
+        if($flush){
+            $this->em->persist($obj);
+            $this->em->flush();
+        }
+
+        return $obj;
     }
 }

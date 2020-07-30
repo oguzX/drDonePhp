@@ -2523,3 +2523,15 @@ h2.title {
   display: block;
   margin: 0 auto;
 }
+
+.f-15{
+  font-size: 15px;
+}
+
+.f-17{
+  font-size: 17px;
+}
+
+.f-20{
+  font-size: 20px;
+}
