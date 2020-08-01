@@ -2536,6 +2536,18 @@ h2.title {
   margin: 0 auto;
 }
 
+.sold::after{
+  content: 'Satıldı';
+  background-color: #232323;
+  position: absolute;
+  top: 0;
+  left: 10px;
+  transform: rotate(20deg);
+  text-decoration: none;
+  padding: 2px 5px;
+  color: #efefef;
+}
+
 .product-list{
   display: flex;
   justify-content: space-evenly;
@@ -2568,4 +2580,8 @@ h2.title {
 
 .ajaxRequest {
   cursor: pointer;
+}
+
+.position-relative{
+  position: relative;
 }

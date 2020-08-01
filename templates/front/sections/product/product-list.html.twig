@@ -9,7 +9,7 @@
     <div class="container">
         <div class="breadcrumbs">
             <ol class="breadcrumb">
-                <li><a href="{{ path('home') }}">Home</a></li>
+                <li><a href="{{ path('home') }}">Ana Sayfa</a></li>
                 <li class="active">{{title}}</li>
             </ol>
         </div><!--/breadcrums-->
@@ -19,9 +19,9 @@
         </div>
         <div class="row m-b-10">
             <div class="col-sm-12">
-                <div class="row">
+                <div class="row mb-20">
                     <div class="col-sm-10"></div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 col-sm-2 text-right">
                         {% if layoutType == 'product-management'  %}
                             <a href="{{ path('user_product_add') }}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Ekle</a>
                         {% endif %}
@@ -40,16 +40,16 @@
                     {% if layoutType == 'product-management'  %}
                     <td></td>
                     <td></td>
-                    {% endif %}
                     <td></td>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for product in products %}
                     <tr>
                         <td class="cart_product">
-                            {% set thumbnail = product.images[0].url | default('none-img.png') %}
-                            <a href="{{ path('product_detail',{'handle':product.handle}) }}"><img class="img-thumbnail img-thumbnail-sm" src="{{ asset('assets/images/user/product/'~thumbnail ) }}" alt=""></a>
+                            {% set thumbnail = product.images[0].url | default('assets/images/user/product/none-img.png') %}
+                            <a href="{{ path('product_detail',{'handle':product.handle}) }}" class="position-relative {% if product.isSold %}sold{% endif %}"><img class="img-thumbnail img-thumbnail-sm " src="{{ asset(thumbnail ) }}" alt=""></a>
                         </td>
                         <td class="cart_description">
                             <a href="{{ path('product_detail',{'handle':product.handle}) }}" class="f-15">{{ product.title }}</a>
@@ -77,13 +77,6 @@
                         <td>
                             <a class="cart_quantity_delete btn btn-danger" href="{{ path('user_product_set_delete',{'id':product.id}) }}"><i class="fa fa-times"></i></a>
                         </td>
-                        {% endif %}
-                        {% if layoutType == 'product-wishlist'  %}
-                            <td>
-                                {% if product.isSold %}
-                                    Satıldı
-                                {% endif %}
-                            </td>
                         {% endif %}
                     </tr>
                 {% else %}

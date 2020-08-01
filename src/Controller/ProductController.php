@@ -50,7 +50,7 @@ class ProductController extends AbstractController {
      * @Template("front/sections/product/product-detail.html.twig")
      */
     public function detailAction(Product $product, ProductService $productService){
-        $otherProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(['user'=>$this->getUser(),'isSold'=>0],['createdAt'=>'desc'],4);
+        $otherProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(['user'=>$product->getUser(),'isSold'=>0],['createdAt'=>'desc'],4);
 
         return [
             'product' => $product,

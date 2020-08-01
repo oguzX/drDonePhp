@@ -10,28 +10,16 @@
                         <div class="col-sm-5">
                             <div class="view-product">
                                 {% set thumbnail = product.images[0].url | default('none-img.png') %}
-                                <a href=""><img class="img-thumbnail img-thumbnail-sm" src="{{ asset('assets/images/user/product/'~thumbnail ) }}" alt=""></a>
+                                <a href=""><img class="img-thumbnail img-thumbnail-sm" src="{{ asset(thumbnail ) }}"  id="active-image" alt=""></a>
                             </div>
-                            <div id="similar-product" class="carousel slide" data-ride="carousel">
+                            <div id="similar-product" class="" data-ride="carousel">
 
                                 <!-- Wrapper for slides -->
-                                <div class="carousel-inner">
+                                <div class="owl-carousel owl-theme">
                                     {% for image in product.images %}
-                                        <div class="item active">
-                                            <img src="{{ asset('assets/images/user/product/'~image.url)}}" alt="">
-                                            <img src="{{ asset('assets/images/user/product/'~image.url)}}" alt="">
-                                            <img src="{{ asset('assets/images/user/product/'~image.url)}}" alt="">
-                                        </div>
+                                        <img src="{{ asset(image.url)}}" class="img-thumbnail" style="height: 50px" alt="">
                                     {% endfor %}
                                 </div>
-
-                                <!-- Controls -->
-                                <a class="left item-control" href="#similar-product" data-slide="prev">
-                                    <i class="fa fa-angle-left"></i>
-                                </a>
-                                <a class="right item-control" href="#similar-product" data-slide="next">
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
                             </div>
 
                         </div>
@@ -227,4 +215,34 @@
             </div>
         </div>
     </section>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
+<script type="text/javascript">
+    $('.owl-carousel').owlCarousel({
+        center: true,
+        items:2,
+        loop:true,
+        margin:10,
+        responsive:{
+            600:{
+                items:4
+            }
+        }
+    });
+
+    $( "body" ).delegate('.owl-item img', 'click', function () {
+        var url = $(this).attr('src');
+
+        $("#active-image")
+            .fadeOut(400, function() {
+                $("#active-image").attr('src',url);
+            })
+            .fadeIn(400);
+    });
+</script>
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css') }}">
 {% endblock %}
