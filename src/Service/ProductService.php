@@ -86,6 +86,11 @@ class ProductService
         return $product;
     }
 
+    public function removeObject($object, $flush = false){
+        $this->em->remove($object);
+        $this->em->flush();
+    }
+
     public function imageUpload($imageFile, $pathParam = 'images_path'){
         $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
         // this is needed to safely include the file name as part of the URL
@@ -102,7 +107,7 @@ class ProductService
             // ... handle exception if something happens during file upload
         }
 
-        return $newFilename;
+        return $this->parameterBag->get($pathParam).$newFilename;
     }
 
     public function setUniqueSlug(Product $product, $flush = false){
@@ -142,8 +147,7 @@ class ProductService
     public function toggleWishlist(Product $product){
         $wishlist = $this->em->getRepository(Wishlist::class)->findOneBy(['product'=>$product, 'user'=>$this->user]);
         if($wishlist){
-            $this->em->remove($wishlist);
-            $this->em->flush();
+            $this->removeObject($wishlist, true);
             $response = 'Ürün istek listenden çıkarıldı';
         }else{
             $wishlistObj = new Wishlist();

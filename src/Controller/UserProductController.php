@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Images;
 use App\Entity\Product;
 use App\Service\ProductService;
 use App\Type\ProductType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,6 +75,7 @@ class UserProductController extends AbstractController {
         }
 
         return [
+            'product' => $product,
             'productForm' => $form->createView()
         ];
     }
@@ -118,5 +121,32 @@ class UserProductController extends AbstractController {
 
         $referer = $request->headers->get('referer');
         return new RedirectResponse($referer);
+    }
+
+    /**
+     * @Route("/{id}/image/update", name="user_product_image_update")
+     *
+     */
+    public function imageUpdateAction(Request $request, Product $product, ProductService $productService){
+        try{
+            $productService->addImagesToProduct($product, $request->files->all(), true);
+            return new JsonResponse(['error' => 0, 'message' => ' Fotograf Yuklendi']);
+        }catch (\Exception $exception){
+            return new JsonResponse(['error' => 1, 'message' => 'Sistemsel Hata: ' . $exception->getMessage()]);
+        }
+    }
+
+    /**
+     * @Route("/image/{id}/remove", name="user_product_image_remove")
+     *
+     */
+    public function imageRemoveAction(Request $request, Images $image, ProductService $productService)
+    {
+        try {
+            $productService->removeObject($image, true);
+            return new JsonResponse(['error' => 0, 'message' => ' Fotograf silindi']);
+        } catch (\Exception $exception) {
+            return new JsonResponse(['error' => 1, 'message' => 'Sistemsel Hata: ' . $exception->getMessage()]);
+        }
     }
 }

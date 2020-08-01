@@ -19,6 +19,14 @@ $(document).ready(function () {
         var callbackSuccess = $element.data('callback-success');
         selectedElement = $element;
 
+
+        Swal.fire({
+            title: "İşlem yapılıyor...",
+            text: "Lütfen Bekleyiniz",
+            showConfirmButton: false,
+            allowOutsideClick: false
+        });
+
         $.ajax({
             data:data,
             url:url,
@@ -42,5 +50,9 @@ $(document).ready(function () {
             selectedElement.html('<i class="fa fa-plus-square"></i> İstek Listeme Ekle</a>');
             selectedElement.data('callback-success',"toggleWishlist('added')")
         }
+    }
+
+    function removeImage(selectorId) {
+        $('#'+selectorId).remove();
     }
 });

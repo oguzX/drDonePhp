@@ -1,6 +1,6 @@
 {% extends 'front/base.html.twig' %}
 {% block section %}
-    <section id="cart_items">
+    <section id="cart_items" class="mb-20">
         <div class="container">
             <div class="col-md-8 col-md-offset-2">
                 {% if form_errors(productForm) %}
@@ -19,8 +19,43 @@
                 </div>
                 {{ form_end(productForm) }}
             </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h3>Ürün fotoğraf güncelleme</h3>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form action="{{ path('user_product_image_update',{id:product.id}) }}"
+                                  class="dropzone dz-clickable" method="post" enctype="multipart/form-data">
+                                <div class="fallback">
+                                    <input name="file" type="file" multiple/>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {% for image in product.images %}
+                                    <div class="col-sm-6" id="image-{{ image.id }}">
+                                        <div class="row">
+                                            <div class="col-sm-10">
+                                                <img src="{{ asset(image.url) }}" alt="" class="img-thumbnail m-10" style="width: 100px;">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a data-href="{{ path('user_product_image_remove',{id:image.id}) }}" data-callback-success="removeImage('image-{{ image.id }}')"  class="ajaxRequest btn btn-danger"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 {% endblock %}
 {% block javascripts %}
+    <script type="text/javascript" src="{{ asset('assets/js/dropzone.min.js') }}"></script>
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}">
 {% endblock %}
