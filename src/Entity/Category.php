@@ -34,6 +34,11 @@ class Category
      */
     private $product;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $handle;
+
     public function __construct()
     {
         $this->product = new ArrayCollection();
@@ -90,6 +95,18 @@ class Category
         if ($this->product->contains($product)) {
             $this->product->removeElement($product);
         }
+
+        return $this;
+    }
+
+    public function getHandle(): ?string
+    {
+        return $this->handle;
+    }
+
+    public function setHandle(string $handle): self
+    {
+        $this->handle = $handle;
 
         return $this;
     }
