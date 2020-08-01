@@ -22,6 +22,7 @@ class ProductRepository extends ServiceEntityRepository
     public function getProduct($filter = [])
     {
         $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.user','u')
             ->andWhere('p.deletedAt is null')
             ->orderBy('p.createdAt','desc');
 
@@ -45,10 +46,31 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         if(!empty($filter['category'])){
-//            $qb->leftJoin('p.category', 'c')
             $qb->leftJoin('p.categories', 'c')
                 ->andWhere('c.id = :category')
                 ->setParameter('category', $filter['category']);;
+        }
+
+        if(!empty($filter['search'])){
+            $qb->andWhere('p.title LIKE :search or u.email LIKE :search')
+                ->setParameter('search', '%'.$filter['search'].'%');;
+        }
+
+        if(!empty($filter['sorting'])){
+            switch ($filter['sorting']){
+                case 'priceAsc':
+                    $qb->orderBy('p.price','asc');
+                    break;
+                case 'priceDesc':
+                    $qb->orderBy('p.price','desc');
+                    break;
+                case 'createdAsc':
+                    $qb->orderBy('p.createdAt','asc');
+                    break;
+                case 'createdDesc':
+                    $qb->orderBy('p.createdAt','desc');
+                    break;
+            }
         }
 
         if(!empty($filter['withoutResult'])){

@@ -2585,3 +2585,34 @@ h2.title {
 .position-relative{
   position: relative;
 }
+
+.user-card{
+  border: 1px solid;
+  border-radius: 10px;
+  padding: 3px;
+}
+.user-card > div{
+  background-color: #ededed;
+  padding: 10px;
+  border-radius: 10px;
+}
+.user-card h5{
+  font-size: 14px;
+  font-weight: bold;
+  word-wrap: break-word;
+  text-shadow: 1px 1px 0 #fff;
+  padding-top: 5px;
+}
+.user-card .user-info{
+  font-size: 11px;
+  color: #808080;
+}
+.user-card .user-phone{
+  font-size: 18px;
+  color: #808080;
+  text-shadow: 0px 0px 0px #696969;
+}
+.dropdown-menu-left{
+  right: 0 !important;
+  left: unset;
+}

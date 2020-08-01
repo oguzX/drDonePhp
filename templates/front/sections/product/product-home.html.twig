@@ -8,6 +8,7 @@
                 <div class="col-sm-9 padding-right">
                     <div class="features_items"><!--features_items-->
                         <h2 class="title text-center">{{ productsTitle | default('Yeni Ürünler')}}</h2>
+                        {% include('front/sections/product/product-filters.html.twig') %}
                         {% include('front/sections/product/product-grids.html.twig') %}
                     </div><!--features_items-->
 

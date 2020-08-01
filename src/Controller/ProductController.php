@@ -23,7 +23,12 @@ class ProductController extends AbstractController {
      * @Template("front/sections/product/product-home.html.twig")
      */
     public function indexAction(Category $category, Request $request, ProductService $productService){
-        $paginateProducts = $productService->paginatedCategory($request, $category);
+        $filter = [];
+        if($request->get('sorting')){
+            $filter['sorting'] = $request->get('sorting');
+        }
+
+        $paginateProducts = $productService->paginatedCategory($request, $category, $filter);
 
         return [
             'categories' => $productService->getCategories(),
@@ -44,6 +49,28 @@ class ProductController extends AbstractController {
             'layoutType' => 'product-wishlist'
         ];
     }
+
+
+    /**
+     * @Route("/search", name="product_search")
+     * @Template("front/sections/product/product-home.html.twig")
+     */
+    public function searchAction(Request $request, ProductService $productService){
+        if($request->query->get('search')){
+            $filter['search'] = $request->get('search');
+        }
+        $paginateProducts = $productService->paginatedProduct($request,$filter);
+
+        return [
+            'categories' => $productService->getCategories(),
+            'productsTitle' => $request->get('search'). ' sonucları',
+            'paginateProducts' => $paginateProducts
+        ];
+    }
+
+
+
+
 
     /**
      * @Route("/{handle}", name="product_detail")

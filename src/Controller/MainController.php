@@ -16,7 +16,11 @@ class MainController extends AbstractController {
      * @Template("front/sections/product/product-home.html.twig")
      */
     public function indexAction(Request $request, ProductService $productService){
-        $paginateProducts = $productService->paginatedProduct($request);
+        $filter = [];
+        if($request->get('sorting')){
+            $filter['sorting'] = $request->get('sorting');
+        }
+        $paginateProducts = $productService->paginatedProduct($request, $filter);
 
         return [
             'categories' => $productService->getCategories(),

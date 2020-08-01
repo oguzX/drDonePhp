@@ -33,10 +33,10 @@
 									<span>{{ product.price }} TL</span>
 									<label>Adet: </label>
 									<input type="text" value="{{product.quantity}}" readonly aria-readonly="true" />
-									<button type="button" class="btn btn-fefault cart">
+									<a type="button" class="btn btn-fefault cart" href="mailto:{{ product.user.email }}">
                                          İrtibata Geç
                                         <i class="fa fa-arrow-right" aria-hidden="true"></i>
-									</button>
+									</a>
 								</span>
                                 <p><b>Durum:</b> {% if product.isSold %} Satıldı {% else %} Stok Var {% endif %}</p>
                                 <p><b><i class="fa fa-user-o" aria-hidden="true"></i> Satıcı:</b> {{ product.user.username }}</p>
@@ -49,6 +49,14 @@
                                 <span><a data-href="{{ path('product_whislist_toggle',{'handle':product.handle}) }}" data-callback-success="toggleWishlist('added')" class="ajaxRequest btn btn-default"><i class="fa fa-plus-square"></i> İstek Listeme Ekle</a></span>
                                 {% endif %}
                                 </p>
+                                <span class="row user-card">
+                                        <div class="col-sm-12">
+                                                <h5><b>{{ product.user.username }}</b></h5>
+                                                <div class="user-info">Üyelik Tarihi {{ product.user.createdAt | date('M Y') }}</div>
+                                                <h4><b>{{ product.user.email }}</b></h4>
+                                                {% if product.user.phone %}<div class="user-phone"><i class="fa fa-phone" aria-hidden="true"></i> {{ product.user.phone }}</div>{% endif %}
+                                        </div>
+                                    </span>
                             </div><!--/product-information-->
                         </div>
                     </div><!--/product-details-->

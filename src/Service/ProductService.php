@@ -167,14 +167,17 @@ class ProductService
         $this->em->flush($wishlist);
     }
 
-    public function paginatedProduct(Request $request, $limit = 9){
-        $queryBuilder = $this->em->getRepository(Product::class)->getProduct(['withoutResult'=>true]);
+    public function paginatedProduct(Request $request, $filter=[], $limit = 9){
+        $filter['withoutResult'] = true;
+        $queryBuilder = $this->em->getRepository(Product::class)->getProduct($filter);
 
         return $this->setPaginated($queryBuilder, $request, $limit);
     }
 
-    public function paginatedCategory(Request $request, Category $category, $limit = 9){
-        $queryBuilder = $this->em->getRepository(Product::class)->getProduct(['withoutResult'=>true, 'category'=>$category]);
+    public function paginatedCategory(Request $request, Category $category, $filter=[], $limit = 9){
+        $filter['withoutResult'] = true;
+        $filter['category'] = true;
+        $queryBuilder = $this->em->getRepository(Product::class)->getProduct($filter);
 
         return $this->setPaginated($queryBuilder, $request, $limit);
     }

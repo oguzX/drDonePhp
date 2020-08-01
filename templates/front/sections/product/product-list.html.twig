@@ -72,7 +72,9 @@
                             {% endif %}
                         </td>
                         <td>
+                            {% if product.isSold == 0 %}
                             <a class="cart_quantity_delete btn btn-info" href="{{ path('user_product_edit',{'id':product.id}) }}"><i class="fa fa-pencil"></i></a>
+                            {% endif %}
                         </td>
                         <td>
                             <a class="cart_quantity_delete btn btn-danger" href="{{ path('user_product_set_delete',{'id':product.id}) }}"><i class="fa fa-times"></i></a>

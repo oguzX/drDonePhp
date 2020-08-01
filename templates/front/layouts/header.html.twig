@@ -108,9 +108,11 @@
                     </div>
                 </div>
                 <div class="col-sm-3">
-                    <div class="search_box pull-right">
-                        <input type="text" placeholder="Search"/>
-                    </div>
+                    <form action="{{ path('product_search') }}" method="get">
+                        <div class="search_box pull-right">
+                            <input type="text" name="search" placeholder="Ara..."/>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
