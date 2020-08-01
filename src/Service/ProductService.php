@@ -4,8 +4,10 @@
 namespace App\Service;
 
 
+use App\Entity\Category;
 use App\Entity\Images;
 use App\Entity\Product;
+use App\Entity\Wishlist;
 use Doctrine\ORM\EntityManagerInterface;
 use Easybook\Slugger;
 use FOS\UserBundle\Model\UserInterface;
@@ -106,5 +108,42 @@ class ProductService
         }
 
         return $obj;
+    }
+
+    public function getCategories(){
+        return $this->em->getRepository(Category::class)->findAll();
+    }
+
+    public function addToWishlist(Product $product){
+        $wishlistObj = new Wishlist();
+        $wishlistObj->setUser($this->user);
+        $wishlistObj->setProduct($product);
+        $wishlistObj->setCreatedAt(new \DateTime());
+
+        $this->flush($wishlistObj, true);
+    }
+
+    public function toggleWishlist(Product $product){
+        $wishlist = $this->em->getRepository(Wishlist::class)->findOneBy(['product'=>$product, 'user'=>$this->user]);
+        if($wishlist){
+            $this->em->remove($wishlist);
+            $this->em->flush();
+            $response = 'Ürün istek listenden çıkarıldı';
+        }else{
+            $wishlistObj = new Wishlist();
+            $wishlistObj->setUser($this->user);
+            $wishlistObj->setProduct($product);
+            $wishlistObj->setCreatedAt(new \DateTime());
+            $this->flush($wishlistObj, true);
+
+            $response = $product->getTitle().' istek listene eklendi';
+        }
+
+        return $response;
+    }
+
+    public function removeToWishlist(Wishlist $wishlist){
+        $this->em->remove($wishlist);
+        $this->em->flush($wishlist);
     }
 }

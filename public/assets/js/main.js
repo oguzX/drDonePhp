@@ -1,13 +1,46 @@
-import '../css/main.css';
+var selectedElement = null;
 
-var $ = require('jquery');
+$(document).ready(function () {
 
-$(document).ready(function() {
-	$('body').prepend('<h1>'+greet('jill')+'</h1>');
+    function swalMessage($title, $text, $type){
+        Swal.fire({
+            title: $title,
+            text: $text,
+            icon: $type,
+            confirmButtonText: 'Tamam'
+        })
+    }
+
+    $('.ajaxRequest').on('click', function () {
+        $element = $(this);
+
+        url = $element.data('href');
+        data = $element.data('data');
+        var callbackSuccess = $element.data('callback-success');
+        selectedElement = $element;
+
+        $.ajax({
+            data:data,
+            url:url,
+            success:function (response) {
+                swalMessage('Başarılı!', response.message, 'success');
+                eval(callbackSuccess);
+            },
+            error: function (response) {
+                console.log(response);
+                message = response.responseJSON.message;
+                swalMessage('Hata', message,'error');
+            }
+        });
+    });
+    
+    function toggleWishlist($status) {
+        if($status=='added'){
+            selectedElement.html('<i class="fa fa-minus-square"></i>İstek Listemden Çıkar</a>');
+            selectedElement.data('callback-success',"toggleWishlist('removed')")
+        }else{
+            selectedElement.html('<i class="fa fa-plus-square"></i>İstek Listeme Ekle</a>');
+            selectedElement.data('callback-success',"toggleWishlist('added')")
+        }
+    }
 });
-
-import 'bootstrap';
-
-const Swal = require('sweetalert2');
-
-var custom = require('./custom');

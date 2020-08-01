@@ -7,6 +7,23 @@
                 <p>{{ product.title }}</p>
                 <a href="{{ path('product_detail', {'handle':product.handle}) }}" type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Detay</a>
             </div>
+            <div class="product-overlay">
+                <div class="overlay-content">
+                    <h2>{{ product.price }} TL</h2>
+                    <p>{{ product.title }}</p>
+                    <a href="{{ path('product_detail', {'handle':product.handle}) }}" type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Detay</a>
+                </div>
+            </div>
+        </div>
+        <div class="choose">
+            <ul class="nav nav-pills nav-justified">
+                {% set wishlistObj = product | isInWhishlist %}
+                {% if wishlistObj %}
+                    <li><a data-href="{{ path('product_whislist_toggle',{'handle':product.handle}) }}" data-callback-success="toggleWishlist('removed')" class="ajaxRequest"><i class="fa fa-minus-square"></i>İstek Listemden Çıkar</a></li>
+                {% else %}
+                    <li><a data-href="{{ path('product_whislist_toggle',{'handle':product.handle}) }}" data-callback-success="toggleWishlist('added')" class="ajaxRequest"><i class="fa fa-plus-square"></i>İstek Listeme Ekle</a></li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 </div>

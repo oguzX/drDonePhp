@@ -26,11 +26,17 @@ class User extends BaseUser
      */
     private $products;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Wishlist::class, mappedBy="user")
+     */
+    private $wishlists;
+
     public function __construct()
     {
         parent::__construct();
         // your own logic
         $this->products = new ArrayCollection();
+        $this->wishlists = new ArrayCollection();
     }
 
     /**
@@ -58,6 +64,37 @@ class User extends BaseUser
             // set the owning side to null (unless already changed)
             if ($product->getUser() === $this) {
                 $product->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Wishlist[]
+     */
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
+    public function addWishlist(Wishlist $wishlist): self
+    {
+        if (!$this->wishlists->contains($wishlist)) {
+            $this->wishlists[] = $wishlist;
+            $wishlist->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlist(Wishlist $wishlist): self
+    {
+        if ($this->wishlists->contains($wishlist)) {
+            $this->wishlists->removeElement($wishlist);
+            // set the owning side to null (unless already changed)
+            if ($wishlist->getUser() === $this) {
+                $wishlist->setUser(null);
             }
         }
 

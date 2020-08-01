@@ -3,48 +3,7 @@
     <section>
         <div class="container">
             <div class="row">
-                <div class="col-sm-3">
-                    <div class="left-sidebar">
-                        <h2>Kategoriler</h2>
-                        <div class="panel-group category-products" id="accordian"><!--category-productsr-->
-                            {% for category in categories %}
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title"><a href="#">{{category.title}}</a></h4>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div><!--/category-products-->
-
-                        <div class="brands_products"><!--brands_products-->
-                            <h2>Brands</h2>
-                            <div class="brands-name">
-                                <ul class="nav nav-pills nav-stacked">
-                                    <li><a href=""> <span class="pull-right">(50)</span>Acne</a></li>
-                                    <li><a href=""> <span class="pull-right">(56)</span>Grüne Erde</a></li>
-                                    <li><a href=""> <span class="pull-right">(27)</span>Albiro</a></li>
-                                    <li><a href=""> <span class="pull-right">(32)</span>Ronhill</a></li>
-                                    <li><a href=""> <span class="pull-right">(5)</span>Oddmolly</a></li>
-                                    <li><a href=""> <span class="pull-right">(9)</span>Boudestijn</a></li>
-                                    <li><a href=""> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
-                                </ul>
-                            </div>
-                        </div><!--/brands_products-->
-
-                        <div class="price-range"><!--price-range-->
-                            <h2>Price Range</h2>
-                            <div class="well">
-                                <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
-                                <b>$ 0</b> <b class="pull-right">$ 600</b>
-                            </div>
-                        </div><!--/price-range-->
-
-                        <div class="shipping text-center"><!--shipping-->
-                            <img src="images/home/shipping.jpg" alt="" />
-                        </div><!--/shipping-->
-
-                    </div>
-                </div>
+                {% include 'front/sections/product/product-sidebar.html.twig' %}
 
                 <div class="col-sm-9 padding-right">
                     <div class="product-details"><!--product-details-->
@@ -57,22 +16,13 @@
 
                                 <!-- Wrapper for slides -->
                                 <div class="carousel-inner">
-                                    <div class="item active">
-                                        <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-                                        <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-                                        <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-                                    </div>
-                                    <div class="item">
-                                        <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-                                        <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-                                        <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-                                    </div>
-                                    <div class="item">
-                                        <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-                                        <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-                                        <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-                                    </div>
-
+                                    {% for image in product.images %}
+                                        <div class="item active">
+                                            <img src="{{ asset('assets/images/user/product/'~image.url)}}" alt="">
+                                            <img src="{{ asset('assets/images/user/product/'~image.url)}}" alt="">
+                                            <img src="{{ asset('assets/images/user/product/'~image.url)}}" alt="">
+                                        </div>
+                                    {% endfor %}
                                 </div>
 
                                 <!-- Controls -->
@@ -121,16 +71,6 @@
                                         {{ product.description }}
                                     </p>
                                 </div>
-                                {% if otherProducts %}
-                                <div class="row">
-                                    <h2 class="title text-center">Satıcının Diğer ürünleri</h2>
-                                    <div class="product-list">
-                                        {% for product in otherProducts %}
-                                            {% include 'front/sections/product/single-product.html.twig' with {'col':3} %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                                {% endif %}
                             </div>
 
 {#                            <div class="tab-pane fade" id="reviews" >#}
@@ -160,6 +100,30 @@
                         </div>
                     </div><!--/category-tab-->
 
+                    <div class="recommended_items"><!--recommended_items-->
+                        <h2 class="title text-center">Satıcının Diğer ürünleri</h2>
+                        <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    {% if otherProducts %}
+                                        <div class="row">
+                                            <div class="product-list">
+                                                {% for product in otherProducts %}
+                                                    {% include 'front/sections/product/single-product.html.twig' with {'col':4} %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+{#                            <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">#}
+{#                                <i class="fa fa-angle-left"></i>#}
+{#                            </a>#}
+{#                            <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">#}
+{#                                <i class="fa fa-angle-right"></i>#}
+{#                            </a>#}
+                        </div>
+                    </div><!--/recommended_items-->
 {#                    <div class="recommended_items"><!--recommended_items-->#}
 {#                        <h2 class="title text-center">recommended items</h2>#}
 

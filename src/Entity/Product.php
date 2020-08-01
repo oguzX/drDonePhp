@@ -90,6 +90,11 @@ class Product
 
     private $container;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Wishlist::class, mappedBy="product")
+     */
+    private $wishlists;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -99,6 +104,7 @@ class Product
         if($this->isSold === null){
             $this->setIsSold(false);
         }
+        $this->wishlists = new ArrayCollection();
     }
 
     /**
@@ -323,6 +329,37 @@ class Product
     public function setHandle(string $handle): self
     {
         $this->handle = $handle;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Wishlist[]
+     */
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
+    public function addWishlist(Wishlist $wishlist): self
+    {
+        if (!$this->wishlists->contains($wishlist)) {
+            $this->wishlists[] = $wishlist;
+            $wishlist->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlist(Wishlist $wishlist): self
+    {
+        if ($this->wishlists->contains($wishlist)) {
+            $this->wishlists->removeElement($wishlist);
+            // set the owning side to null (unless already changed)
+            if ($wishlist->getProduct() === $this) {
+                $wishlist->setProduct(null);
+            }
+        }
 
         return $this;
     }

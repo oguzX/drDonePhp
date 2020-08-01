@@ -883,6 +883,7 @@ h2.title {
 
 .productinfo img{
   width: 100%;
+  max-height: 150px;
 }
 
 .productinfo{
@@ -1588,6 +1589,7 @@ h2.title {
 .cart_info table tr td {
   border-top: 0 none;
   vertical-align: inherit;
+  text-align: center;
 }
 
 
@@ -2543,4 +2545,8 @@ h2.title {
 
 .m-20{
   margin: 20px
+}
+
+.ajaxRequest {
+  cursor: pointer;
 }

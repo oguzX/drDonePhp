@@ -22,7 +22,7 @@ class UserProductController extends AbstractController {
      * @Template("front/sections/product/product-management.html.twig")
      */
     public function indexAction(){
-        $products = $this->getDoctrine()->getRepository(Product::class)->findBy(['user' => $this->getUser()->getId()]);
+        $products = $this->getDoctrine()->getRepository(Product::class)->getProduct(['user' => $this->getUser()->getId()]);
         return [
             'products' => $products
         ];
@@ -68,6 +68,27 @@ class UserProductController extends AbstractController {
             $this->addFlash('success','Satıldı Olarak Ayarlandı!');
         }catch (\Exception $exception){
             $this->addFlash('error','Satıldı Olarak Ayarlanamadı!');
+        }
+
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer);
+    }
+
+    /**
+     * @Route("/{id}/delete", name="user_product_set_delete")
+     *
+     */
+    public function setDeleteAction(Request $request, Product $product){
+        try{
+            $product->setDeletedAt(new \DateTime());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+
+            $this->addFlash('success','Silindi!');
+        }catch (\Exception $exception){
+            $this->addFlash('error','Silinemedi!');
         }
 
         $referer = $request->headers->get('referer');
