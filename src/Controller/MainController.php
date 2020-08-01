@@ -12,7 +12,7 @@ class MainController extends AbstractController {
 
     /**
      * @Route("/", name="home")
-     * @Template("front/sections/product/product-list.html.twig")
+     * @Template("front/sections/product/product-home.html.twig")
      */
     public function indexAction(ProductService $productService){
         $products = $this->getDoctrine()->getRepository(Product::class)->getProduct();

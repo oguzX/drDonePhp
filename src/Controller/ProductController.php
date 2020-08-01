@@ -66,4 +66,15 @@ class ProductController extends AbstractController {
             return new JsonResponse(['error'=>1,'message'=>'Sistemsel bir hata meydana geldi, '.$exception->getMessage()], 500);
         }
     }
+
+    /**
+     * @Route("/wishlist", name="product_whislist")
+     */
+    public function wishlistList(Product $product, ProductService $productService){
+        $products = $this->getDoctrine()->getRepository(Product::class)->getProduct(['user' => $this->getUser()->getId()]);
+        return [
+            'products' => $products,
+            'layoutType' => 'product-wishlist'
+        ];
+    }
 }

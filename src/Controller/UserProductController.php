@@ -19,12 +19,13 @@ class UserProductController extends AbstractController {
 
     /**
      * @Route("/", name="user_product")
-     * @Template("front/sections/product/product-management.html.twig")
+     * @Template("front/sections/product/product-list.html.twig")
      */
     public function indexAction(){
         $products = $this->getDoctrine()->getRepository(Product::class)->getProduct(['user' => $this->getUser()->getId()]);
         return [
-            'products' => $products
+            'products' => $products,
+            'layoutType' => 'product-management'
         ];
     }
 

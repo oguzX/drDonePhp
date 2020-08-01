@@ -34,6 +34,10 @@ class ProductRepository extends ServiceEntityRepository
                 ->setParameter('user', $filter['user']);
         }
 
+        if(!empty($filter['wishlist'])){
+            $qb->leftJoin('p.wishlist', 'w');
+        }
+
         return $qb
             ->getQuery()
             ->getResult();
