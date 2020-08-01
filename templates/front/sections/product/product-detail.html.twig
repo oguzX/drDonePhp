@@ -52,7 +52,14 @@
 								</span>
                                 <p><b>Durum:</b> {% if product.isSold %} Satıldı {% else %} Stok Var {% endif %}</p>
                                 <p><b>Satıcı:</b> {{ product.user.username }}</p>
-                                <a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
+                                <p>
+                                    {% set wishlistObj = product | isInWhishlist %}
+                                    {% if wishlistObj %}
+                                <span><a data-href="{{ path('product_whislist_toggle',{'handle':product.handle}) }}" data-callback-success="toggleWishlist('removed')" class="ajaxRequest btn btn-default"><i class="fa fa-minus-square"></i> İstek Listemden Çıkar</a></span>
+                                {% else %}
+                                <span><a data-href="{{ path('product_whislist_toggle',{'handle':product.handle}) }}" data-callback-success="toggleWishlist('added')" class="ajaxRequest btn btn-default"><i class="fa fa-plus-square"></i> İstek Listeme Ekle</a></span>
+                                {% endif %}
+                                </p>
                             </div><!--/product-information-->
                         </div>
                     </div><!--/product-details-->

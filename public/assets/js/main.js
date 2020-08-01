@@ -36,10 +36,10 @@ $(document).ready(function () {
     
     function toggleWishlist($status) {
         if($status=='added'){
-            selectedElement.html('<i class="fa fa-minus-square"></i>İstek Listemden Çıkar</a>');
+            selectedElement.html('<i class="fa fa-minus-square"></i> İstek Listemden Çıkar</a>');
             selectedElement.data('callback-success',"toggleWishlist('removed')")
         }else{
-            selectedElement.html('<i class="fa fa-plus-square"></i>İstek Listeme Ekle</a>');
+            selectedElement.html('<i class="fa fa-plus-square"></i> İstek Listeme Ekle</a>');
             selectedElement.data('callback-success',"toggleWishlist('added')")
         }
     }
