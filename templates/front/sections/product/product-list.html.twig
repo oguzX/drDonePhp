@@ -1,17 +1,21 @@
 {% extends 'front/base.html.twig' %}
 {% block section %}
-
+    {% if layoutType == 'product-wishlist'  %}
+        {% set title = 'İstek Listem' %}
+    {% elseif layoutType == 'product-management' %}
+        {% set title = 'Ürünlerim' %}
+    {% endif %}
 <section id="cart_items">
     <div class="container">
         <div class="breadcrumbs">
             <ol class="breadcrumb">
                 <li><a href="{{ path('home') }}">Home</a></li>
-                <li class="active">Ürünlerim</li>
+                <li class="active">{{title}}</li>
             </ol>
         </div><!--/breadcrums-->
 
         <div class="step-one">
-            <h2 class="heading">Ürünlerim</h2>
+            <h2 class="heading">{{title}}</h2>
         </div>
         <div class="row m-b-10">
             <div class="col-sm-12">

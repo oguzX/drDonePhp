@@ -18,20 +18,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController {
 
     /**
-     * @Route("/{handle}", name="product_detail")
-     * @Template("front/sections/product/product-detail.html.twig")
-     */
-    public function detailAction(Product $product, ProductService $productService){
-        $otherProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(['user'=>$this->getUser(),'isSold'=>0],['createdAt'=>'desc'],4);
-
-        return [
-            'product' => $product,
-            'otherProducts' => $otherProducts,
-            'categories' => $productService->getCategories()
-        ];
-    }
-
-    /**
      * @Route("/{handle}/addToWishlist", name="product_whislist_add")
      */
     public function wishlistAdd(Product $product, ProductService $productService){
@@ -69,12 +55,28 @@ class ProductController extends AbstractController {
 
     /**
      * @Route("/wishlist", name="product_whislist")
+     * @Template("front/sections/product/product-list.html.twig")
      */
-    public function wishlistList(Product $product, ProductService $productService){
-        $products = $this->getDoctrine()->getRepository(Product::class)->getProduct(['user' => $this->getUser()->getId()]);
+    public function wishlistList(){
+        $products = $this->getDoctrine()->getRepository(Product::class)->getProduct(['user'=>$this->getUser(),'wishlist'=>true]);
+
         return [
             'products' => $products,
             'layoutType' => 'product-wishlist'
+        ];
+    }
+
+    /**
+     * @Route("/{handle}", name="product_detail")
+     * @Template("front/sections/product/product-detail.html.twig")
+     */
+    public function detailAction(Product $product, ProductService $productService){
+        $otherProducts = $this->getDoctrine()->getRepository(Product::class)->findBy(['user'=>$this->getUser(),'isSold'=>0],['createdAt'=>'desc'],4);
+
+        return [
+            'product' => $product,
+            'otherProducts' => $otherProducts,
+            'categories' => $productService->getCategories()
         ];
     }
 }

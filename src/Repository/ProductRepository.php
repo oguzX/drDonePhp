@@ -25,7 +25,6 @@ class ProductRepository extends ServiceEntityRepository
     public function getProduct($filter = [])
     {
         $qb = $this->createQueryBuilder('p')
-            ->andWhere('p.isSold = 0')
             ->andWhere('p.deletedAt is null')
             ->orderBy('p.createdAt','desc');
 
@@ -35,7 +34,12 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         if(!empty($filter['wishlist'])){
-            $qb->leftJoin('p.wishlist', 'w');
+            $qb->leftJoin('p.wishlists', 'w')
+            ->andWhere('w.user = :user');
+        }
+
+        if(!empty($filter['isSold'])){
+            $qb->andWhere('p.isSold is null');
         }
 
         return $qb
