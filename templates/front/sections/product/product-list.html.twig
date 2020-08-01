@@ -39,6 +39,7 @@
                     <td class="quantity">Adet</td>
                     {% if layoutType == 'product-management'  %}
                     <td></td>
+                    <td></td>
                     {% endif %}
                     <td></td>
                 </tr>
@@ -71,7 +72,10 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a class="cart_quantity_delete btn btn-danger" href="{{ path('user_product_set_sold',{'id':product.id}) }}"><i class="fa fa-times"></i></a>
+                            <a class="cart_quantity_delete btn btn-info" href="{{ path('user_product_edit',{'id':product.id}) }}"><i class="fa fa-pencil"></i></a>
+                        </td>
+                        <td>
+                            <a class="cart_quantity_delete btn btn-danger" href="{{ path('user_product_set_delete',{'id':product.id}) }}"><i class="fa fa-times"></i></a>
                         </td>
                         {% endif %}
                         {% if layoutType == 'product-wishlist'  %}

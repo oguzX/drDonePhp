@@ -53,6 +53,30 @@ class UserProductController extends AbstractController {
         ];
     }
 
+    /**
+     * @Route("/{id}/edit", name="user_product_edit")
+     * @Template("front/sections/product/form/product.html.twig")
+     */
+    public function editAction(Request $request, Product $product, ProductService $productService){
+        $form = $this->createForm(ProductType::class, $product);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try{
+                $productService->updateProduct($form->getData());
+                $this->addFlash('success', 'Ürün Düzenlendi!');
+            }catch (\Exception $exception){
+                $this->addFlash('error', 'Sistem Hatası: '. $exception->getMessage());
+            }
+        }
+
+        return [
+            'productForm' => $form->createView()
+        ];
+    }
+
 
     /**
      * @Route("/{id}/sold", name="user_product_set_sold")

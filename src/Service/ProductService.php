@@ -66,6 +66,13 @@ class ProductService
         return $product;
     }
 
+    public function updateProduct(Product $product){
+        $this->em->persist($product);
+        $this->flush($product, true);
+
+        return $product;
+    }
+
     public function addImagesToProduct(Product $product, $imagesFile, $flush = false){
         if ($imagesFile) {
             foreach ($imagesFile as $imageFile){
