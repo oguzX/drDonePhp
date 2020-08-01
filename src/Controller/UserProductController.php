@@ -43,8 +43,9 @@ class UserProductController extends AbstractController {
 
         if ($form->isSubmitted() && $form->isValid()) {
             try{
-                $productService->createProductByForm($form);
+                $product = $productService->createProductByForm($form);
                 $this->addFlash('success', 'Ürün Eklendi!');
+                return $this->redirectToRoute('user_product_edit',['id'=>$product->getId()]);
             }catch (\Exception $exception){
                 $this->addFlash('error', 'Sistem Hatası: '. $exception->getMessage());
             }

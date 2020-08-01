@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -34,6 +35,14 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
+     * @Assert\NotBlank(groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=10,
+     *     max=12,
+     *     minMessage="Kontrol edin.",
+     *     maxMessage="Kontrol edin.",
+     *     groups={"Registration", "Profile"}
+     * )
      */
     private $phone;
 
@@ -41,6 +50,21 @@ class User extends BaseUser
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     *
+     * @Assert\NotBlank(groups={"Registration", "Profile"})
+     * @Assert\Length(
+     *     min=2,
+     *     max=100,
+     *     minMessage="Kontrol edin.",
+     *     maxMessage="Kontrol edin.",
+     *     groups={"Registration", "Profile"}
+     * )
+     *
+     */
+    private $name;
 
     public function __construct()
     {
@@ -142,6 +166,18 @@ class User extends BaseUser
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

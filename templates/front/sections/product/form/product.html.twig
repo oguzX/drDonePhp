@@ -8,7 +8,7 @@
                     {{ form_errors(productForm) }}
                 </div>
                 {% endif %}
-                {{ form_start(productForm, {'method': 'post', 'attr': {'class': 'fos_user_registration_register'}}) }}
+                {{ form_start(productForm, {'method': 'post'}) }}
                 {% for element in productForm %}
                     <div class="form-group">
                         {{ form_row(element) }}
@@ -19,6 +19,7 @@
                 </div>
                 {{ form_end(productForm) }}
             </div>
+            {% if product is defined %}
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <h3>Ürün fotoğraf güncelleme</h3>
@@ -50,6 +51,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </section>
 {% endblock %}

@@ -57,7 +57,7 @@ class ProductService
 
         $product->setUser($this->user);
 
-        $product = $this->addImagesToProduct($product, [$productForm->get('images')->getData()]);
+        $product = $this->addImagesToProduct($product, $productForm->get('images')->getData()? [$productForm->get('images')->getData()]:null);
         $product = $this->setUniqueSlug($product);
 
         $this->em->persist($product);
