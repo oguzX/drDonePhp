@@ -12,6 +12,7 @@
         "doctrine/orm": "^2.7",
         "easybook/slugger": "^1.0",
         "friendsofsymfony/user-bundle": "^2.1",
+        "knplabs/knp-paginator-bundle": "^5.3",
         "phpdocumentor/reflection-docblock": "^4.3",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "4.4.*",

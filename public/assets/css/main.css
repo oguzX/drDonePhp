@@ -127,6 +127,10 @@ a#scrollUp i{
 	background:#FF4518;
 }
 
+.fa-github:hover  {
+	background:#24292E;
+}
+
 .fa-dribbble:hover  {
 	background:#90C9DC;
 }
@@ -1094,6 +1098,10 @@ h2.title {
   width: 100%;
 }
 
+.navigation{
+  text-align: center;
+}
+
 .pagination {
   display: inline-block;
   margin-bottom: 25px;
@@ -1101,26 +1109,18 @@ h2.title {
   padding-left: 15px;
 }
 
-.pagination  li:first-child  a, .pagination  li:first-child  span {
+.pagination  li:first-child  a, .pagination  li:first-child  span, .navigation a {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
   margin-left: 0;
 }
 
-.pagination  li:last-child  a, .pagination  li:last-child  span {
+.pagination  li:last-child  a, .pagination  li:last-child  span, .navigation a {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 
-.pagination  .active  a, .pagination  .active  span, .pagination  .active  a:hover, .pagination  .active  span:hover, .pagination  .active  a:focus, .pagination  .active  span:focus {
-  background-color: #FE980F;
-  border-color: #FE980F;
-  color: #FFFFFF;
-  cursor: default;
-  z-index: 2;
-}
-
-.pagination  li  a, .pagination  li  span {
+.pagination  li  a, .pagination  li  span, .navigation a, .navigation .current  {
   background-color: #f0f0e9;
   border: 0;
   float: left;
@@ -1133,7 +1133,15 @@ h2.title {
   color:#000;
 }
 
-.pagination  li  a:hover{
+.pagination  .active  a, .pagination  .active  span, .pagination  .active  a:hover, .pagination  .active  span:hover, .pagination  .active  a:focus, .pagination  .active  span:focus, .navigation .current {
+  background-color: #FE980F;
+  border-color: #FE980F;
+  color: #FFFFFF;
+  cursor: default;
+  z-index: 2;
+}
+
+.pagination  li  a:hover, .navigation a:hover {
 	background:#FE980F;
 	color:#fff;
 }

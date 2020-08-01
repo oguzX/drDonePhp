@@ -7,14 +7,8 @@
 
                 <div class="col-sm-9 padding-right">
                     <div class="features_items"><!--features_items-->
-                        <h2 class="title text-center">Yeni Ürünler</h2>
-                        {% for product in products %}
-                            {% include 'front/sections/product/single-product.html.twig' with {'col':4} %}
-                            {% else %}
-                            <h3>
-                                Ürün bulunamadı
-                            </h3>
-                        {% endfor %}
+                        <h2 class="title text-center">{{ productsTitle | default('Yeni Ürünler')}}</h2>
+                        {% include('front/sections/product/product-grids.html.twig') %}
                     </div><!--features_items-->
 
 {#                    <div class="category-tab"><!--category-tab-->#}

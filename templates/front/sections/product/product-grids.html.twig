@@ -1,0 +1,14 @@
+{% for product in paginateProducts %}
+    {% include 'front/sections/product/single-product.html.twig' with {'col':4} %}
+{% else %}
+    <h3>
+        Ürün bulunamadı
+    </h3>
+{% endfor %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="navigation">
+            {{ knp_pagination_render(paginateProducts) }}
+        </div>
+    </div>
+</div>

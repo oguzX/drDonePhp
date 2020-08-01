@@ -19,9 +19,6 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-     /**
-      * @return Product[] Returns an array of Product objects
-      */
     public function getProduct($filter = [])
     {
         $qb = $this->createQueryBuilder('p')
@@ -35,11 +32,27 @@ class ProductRepository extends ServiceEntityRepository
 
         if(!empty($filter['wishlist'])){
             $qb->leftJoin('p.wishlists', 'w')
-            ->andWhere('w.user = :user');
+                ->andWhere('w.user = :wishlistUser')
+                ->setParameter('wishlistUser', $filter['wishlistUser']);;
         }
 
         if(!empty($filter['isSold'])){
             $qb->andWhere('p.isSold is null');
+        }
+
+        if(!empty($filter['limit'])){
+            $qb->setMaxResults($filter['limit']);
+        }
+
+        if(!empty($filter['category'])){
+//            $qb->leftJoin('p.category', 'c')
+            $qb->leftJoin('p.categories', 'c')
+                ->andWhere('c.id = :category')
+                ->setParameter('category', $filter['category']);;
+        }
+
+        if(!empty($filter['withoutResult'])){
+            return $qb;
         }
 
         return $qb

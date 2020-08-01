@@ -9,10 +9,14 @@ use App\Entity\Images;
 use App\Entity\Product;
 use App\Entity\Wishlist;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Easybook\Slugger;
 use FOS\UserBundle\Model\UserInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
@@ -31,15 +35,20 @@ class ProductService
     /** @var UserInterface */
     private $user;
 
+    /** @var PaginatorInterface */
+    private $paginator;
+
+
     /**
      * ProductService constructor.
      */
-    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameterBag, Security $security)
+    public function __construct(EntityManagerInterface $em, ParameterBagInterface $parameterBag, Security $security, PaginatorInterface $paginator)
     {
         $this->em = $em;
         $this->slug = new Slugger();
         $this->parameterBag = $parameterBag;
         $this->user = $security->getUser();
+        $this->paginator = $paginator;
     }
 
     public function createProductByForm($productForm){
@@ -145,5 +154,27 @@ class ProductService
     public function removeToWishlist(Wishlist $wishlist){
         $this->em->remove($wishlist);
         $this->em->flush($wishlist);
+    }
+
+    public function paginatedProduct(Request $request, $limit = 9){
+        $queryBuilder = $this->em->getRepository(Product::class)->getProduct(['withoutResult'=>true]);
+
+        return $this->setPaginated($queryBuilder, $request, $limit);
+    }
+
+    public function paginatedCategory(Request $request, Category $category, $limit = 9){
+        $queryBuilder = $this->em->getRepository(Product::class)->getProduct(['withoutResult'=>true, 'category'=>$category]);
+
+        return $this->setPaginated($queryBuilder, $request, $limit);
+    }
+
+    private function setPaginated(QueryBuilder $queryBuilder, Request $request, $limit){
+        $pagination = $this->paginator->paginate(
+            $queryBuilder, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            $limit
+        );
+
+        return $pagination;
     }
 }

@@ -9,6 +9,7 @@ use App\Service\ProductService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -21,12 +22,13 @@ class ProductController extends AbstractController {
      * @Route("/category/{handle}", name="category")
      * @Template("front/sections/product/product-home.html.twig")
      */
-    public function indexAction(Category $category, ProductService $productService){
-        $products = $this->getDoctrine()->getRepository(Product::class)->getProduct();
+    public function indexAction(Category $category, Request $request, ProductService $productService){
+        $paginateProducts = $productService->paginatedCategory($request, $category);
 
         return [
             'categories' => $productService->getCategories(),
-            'products' => $category->getProduct()
+            'productsTitle' => $category->getTitle(),
+            'paginateProducts' => $paginateProducts
         ];
     }
 
@@ -35,7 +37,7 @@ class ProductController extends AbstractController {
      * @Template("front/sections/product/product-list.html.twig")
      */
     public function wishlistList(){
-        $products = $this->getDoctrine()->getRepository(Product::class)->getProduct(['user'=>$this->getUser(),'wishlist'=>true]);
+        $products = $this->getDoctrine()->getRepository(Product::class)->getProduct(['wishlistUser'=>$this->getUser(),'wishlist'=>true]);
 
         return [
             'products' => $products,
