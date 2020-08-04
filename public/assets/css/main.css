@@ -2587,7 +2587,7 @@ h2.title {
 }
 
 .user-card{
-  border: 1px solid;
+  border: 1px solid #a0a0a0;
   border-radius: 10px;
   padding: 3px;
 }

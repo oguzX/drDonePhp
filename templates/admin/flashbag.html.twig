@@ -1,0 +1,34 @@
+{% for flashMessage in app.session.flashbag.get('error') %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+                $.toast({
+                    heading: 'Hata',
+                    text: '{{ flashMessage }}',
+                    position: 'top-right',
+                    loaderBg: '#fff',
+                    icon: 'error',
+                    hideAfter: 3500,
+                    stack: 6
+                });
+        });
+    </script>
+
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+                $.toast({
+                    heading: 'Başarılı',
+                    text: '{{ flashMessage }}',
+                    position: 'top-right',
+                    loaderBg: '#fff',
+                    icon: 'success',
+                    hideAfter: 3500,
+                    stack: 6
+                });
+        });
+    </script>
+
+{% endfor %}

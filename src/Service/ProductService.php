@@ -7,6 +7,7 @@ namespace App\Service;
 use App\Entity\Category;
 use App\Entity\Images;
 use App\Entity\Product;
+use App\Entity\SubCategory;
 use App\Entity\Wishlist;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
@@ -190,5 +191,38 @@ class ProductService
         );
 
         return $pagination;
+    }
+
+    public function addNewCategory($title){
+        $newCategory = new Category();
+        $newCategory->setTitle($title);
+        $newCategory->setHandle($this->slug->slugify($title));
+        $newCategory->setCreatedAt(new \DateTime());
+        $this->flush($newCategory, 1);
+
+        return $newCategory;
+    }
+
+    public function removeCategoryById($id){
+        $category = $this->em->getRepository(Category::class)->find($id);
+        $this->em->remove($category);
+        $this->em->flush();
+    }
+
+    public function addNewSubCategory($categoryId, $title){
+        $category = $this->em->getRepository(Category::class)->find($categoryId);
+        $newSubCategory = new SubCategory();
+        $newSubCategory->setTitle($title);
+        $newSubCategory->setCategory($category);
+        $newSubCategory->setCreatedAt(new \DateTime());
+        $this->flush($newSubCategory, 1);
+
+        return $newSubCategory;
+    }
+
+    public function removeSubCategoryById($id){
+        $category = $this->em->getRepository(SubCategory::class)->find($id);
+        $this->em->remove($category);
+        $this->em->flush();
     }
 }
