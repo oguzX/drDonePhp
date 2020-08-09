@@ -50,6 +50,18 @@ class ProductController extends AbstractController {
         ];
     }
 
+    /**
+     * @Route("/{id}/exchangeList", name="product_exchange_list")
+     * @Template("front/sections/product/product-exhange-list.html.twig")
+     */
+    public function exchangeList(Product $product, ProductService $productService){
+        $tags = $productService->getExchangeableProducts($product);
+
+        return [
+            'tags' => $tags
+        ];
+    }
+
 
     /**
      * @Route("/search", name="product_search")

@@ -41,6 +41,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                     {% endif %}
                 </tr>
                 </thead>
@@ -71,6 +72,11 @@
                                 <a class="cart_quantity_delete btn btn-success" href="{{ path('user_product_set_sold',{'id':product.id}) }}"><i class="fa fa-check"></i> Satıldı Olarak Ayarla</a>
                             {% endif %}
                         </td>
+                            <td>
+                                {% if product | exchangeableProduct %}
+                                    <a href="{{ path('product_exchange_list',{'id':product.id}) }}" class="btn btn-info">Takas Teklifleri</a>
+                                {% endif %}
+                            </td>
                         <td>
                             {% if product.isSold == 0 %}
                             <a class="cart_quantity_delete btn btn-info" href="{{ path('user_product_edit',{'id':product.id}) }}"><i class="fa fa-pencil"></i></a>

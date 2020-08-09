@@ -95,6 +95,11 @@ class Product
      */
     private $wishlists;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=ExchangeTag::class, mappedBy="product", cascade={"persist"})
+     */
+    private $exchangeTags;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -105,6 +110,7 @@ class Product
             $this->setIsSold(false);
         }
         $this->wishlists = new ArrayCollection();
+        $this->exchangeTags = new ArrayCollection();
     }
 
     /**
@@ -364,5 +370,40 @@ class Product
         return $this;
     }
 
+    /**
+     * @return Collection|ExchangeTag[]
+     */
+    public function getExchangeTags(): Collection
+    {
+        return $this->exchangeTags;
+    }
+
+    public function addExchangeTag(ExchangeTag $exchangeTag): self
+    {
+        if (!$this->exchangeTags->contains($exchangeTag)) {
+            $this->exchangeTags[] = $exchangeTag;
+            $exchangeTag->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExchangeTag(ExchangeTag $exchangeTag): self
+    {
+        if ($this->exchangeTags->contains($exchangeTag)) {
+            $this->exchangeTags->removeElement($exchangeTag);
+            $exchangeTag->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function getExchangeTagsTitle(){
+        $tags = [];
+        foreach ($this->getExchangeTags() as $exchangeTag){
+            array_push($tags, $exchangeTag->getTitle());
+        }
+        return $tags;
+    }
 
 }

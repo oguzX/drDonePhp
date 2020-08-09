@@ -14,7 +14,15 @@
                         {{ form_row(element) }}
                     </div>
                 {% endfor %}
-                <div>
+                <div class="row">
+                    <label style="display:block" for="product_exchangeTags">Takas Edebileceğin Ürün Türleri</label>
+                    <select name="product[exchangeTags][]" class="form-control" data-role="tagsinput" multiple id="product_exchangeTags">
+                        {% for exchangeTag in product.exchangeTags %}
+                            <option value="{{ exchangeTag.title }}">{{ exchangeTag.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mt-10 row">
                     <input type="submit" class="btn btn-info" value="Ekle"/>
                 </div>
                 {{ form_end(productForm) }}
@@ -57,7 +65,9 @@
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript" src="{{ asset('assets/js/dropzone.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/admin/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
 {% endblock %}
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/admin/plugins/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
 {% endblock %}

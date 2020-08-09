@@ -21,10 +21,19 @@ class MainController extends AbstractController {
             $filter['sorting'] = $request->get('sorting');
         }
         $paginateProducts = $productService->paginatedProduct($request, $filter);
-
         return [
             'categories' => $productService->getCategories(),
             'paginateProducts' => $paginateProducts
         ];
+    }
+
+    /**
+     * @Route("/test/{id}")
+     */
+    public function testAction(Request $request, Product $product, ProductService $productService){
+        dump($product->getExchangeTags());
+        $products = $productService->getExchangeableProducts($product);
+        dump($products);
+            die;
     }
 }

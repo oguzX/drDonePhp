@@ -5,10 +5,12 @@ namespace App\Service;
 
 
 use App\Entity\Category;
+use App\Entity\ExchangeTag;
 use App\Entity\Images;
 use App\Entity\Product;
 use App\Entity\SubCategory;
 use App\Entity\Wishlist;
+use App\Repository\ExchangeTagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -224,5 +226,48 @@ class ProductService
         $category = $this->em->getRepository(SubCategory::class)->find($id);
         $this->em->remove($category);
         $this->em->flush();
+    }
+
+    public function setExchangeList(Request $request, Product $product, $flush = false){
+        $exchangeTags = $request->request->get('product')['exchangeTags'];
+        foreach ($product->getExchangeTags() as $productExchangeTag) {
+            $isExist = false;
+            foreach ($exchangeTags as $exchangeTag){
+                if($productExchangeTag->getTitle() == $exchangeTag){
+                    $isExist = true;
+                }
+            }
+            if(!$isExist){
+                $productExchangeTag = null;
+            }
+        }
+        foreach ($exchangeTags as $exchangeTag) {
+            $product->addExchangeTag($this->createOrUpdateExchangeTag($exchangeTag));
+        }
+        if ($flush){
+            $this->em->flush();
+        }
+
+        return $product;
+    }
+
+    private function createOrUpdateExchangeTag($title){
+        $title = strtolower(trim($title));
+        $existTag = $this->em->getRepository(ExchangeTag::class)->findOneBy(['title'=>$title]);
+        if($existTag){
+            return $existTag;
+        }
+        $newExchangeTag = new ExchangeTag();
+        $newExchangeTag->setTitle($title);
+        $newExchangeTag->setCreatedAt(new \DateTime());
+        $this->em->flush();
+
+        return $newExchangeTag;
+    }
+
+    public function getExchangeableProducts(Product $product){
+        $exchangeableProduts = $this->em->getRepository(ExchangeTag::class)->getExchangeableProducts($product);
+
+        return $exchangeableProduts;
     }
 }

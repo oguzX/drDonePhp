@@ -1,0 +1,52 @@
+{% extends 'front/base.html.twig' %}
+{% block section %}
+<section id="cart_items">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="{{ path('home') }}">Ana Sayfa</a></li>
+                <li class="active">Takas Listesi</li>
+            </ol>
+        </div><!--/breadcrums-->
+
+        <div class="step-one">
+            <h2 class="heading">Takas Edilebilir Ürünler</h2>
+        </div>
+        <div class="table-responsive cart_info ">
+            <table class="table table-condensed">
+                <thead>
+                <tr class="cart_menu">
+                    <td class="image">Ürün</td>
+                    <td class="description"></td>
+                    <td class="price">Fiyatı</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for tag in tags %}
+                    {% set product = tag.product.getValues()[0] %}
+                    <tr>
+                        <td class="cart_product">
+                            {% set thumbnail = product.images[0].url | default('assets/images/user/product/none-img.png') %}
+                            <a href="{{ path('product_detail',{'handle':product.handle}) }}" class="position-relative {% if product.isSold %}sold{% endif %}"><img class="img-thumbnail img-thumbnail-sm " src="{{ asset(thumbnail ) }}" alt=""></a>
+                        </td>
+                        <td class="cart_description">
+                            <a href="{{ path('product_detail',{'handle':product.handle}) }}" class="f-15">{{ product.title }}</a>
+                            <p># {{ product.id }}</p>
+                        </td>
+                        <td class="cart_price">
+                            <p>{{ product.price }}₺</p>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">
+                            Ürünün Bulunmuyor.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section> <!--/#cart_items-->
+{% endblock %}
