@@ -179,7 +179,7 @@ class ProductService
 
     public function paginatedCategory(Request $request, Category $category, $filter=[], $limit = 9){
         $filter['withoutResult'] = true;
-        $filter['category'] = true;
+        $filter['category'] = $category->getId();
         $queryBuilder = $this->em->getRepository(Product::class)->getProduct($filter);
 
         return $this->setPaginated($queryBuilder, $request, $limit);

@@ -41,6 +41,10 @@
                                 <p><b>Durum:</b> {% if product.isSold %} Satıldı {% else %} Stok Var {% endif %}</p>
                                 <p><b><i class="fa fa-user-o" aria-hidden="true"></i> Satıcı:</b> {{ product.user.username }}</p>
                                 <p><b><i class="fa fa-calendar-o"></i> Eklenme Tarihi:</b> {{ product.createdAt| date('d M Y') }}</p>
+                                {% set exchangeable = product.getExchangeTagsTitle() %}
+                                {% if exchangeable %}
+                                <p><b><i class="fa fa-exchange-o"></i> Bu ürünlerle Takas edilebilir:</b> {{ exchangeable | join(', ') }}</p>
+                                {% endif %}
                                 <p>
                                     {% set wishlistObj = product | isInWhishlist %}
                                     {% if wishlistObj %}
